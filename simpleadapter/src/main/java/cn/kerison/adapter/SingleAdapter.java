@@ -34,7 +34,7 @@ public abstract class SingleAdapter<T> extends RecyclerView.Adapter<ViewHolderHe
 
     @Override
     public ViewHolderHelper onCreateViewHolder(final ViewGroup pParent, final int pViewType) {
-        return ViewHolderHelper.create(createView(mLayoutInflater,pParent,pViewType));
+        return ViewHolderHelper.create(createView(mLayoutInflater, pParent, pViewType));
     }
 
     @Override
@@ -51,10 +51,8 @@ public abstract class SingleAdapter<T> extends RecyclerView.Adapter<ViewHolderHe
 
     /**
      * 返回某个位置的数据
-     * @param position
-     * @return
      */
-    public T getItem(int position){
+    public T getItem(int position) {
         if (position < mDataList.size()) {
             return mDataList.get(position);
         }
@@ -63,8 +61,6 @@ public abstract class SingleAdapter<T> extends RecyclerView.Adapter<ViewHolderHe
 
     /**
      * 返回某个数据的位置
-     * @param data
-     * @return
      */
     public int getPosition(T data) {
         return mDataList.indexOf(data);
@@ -72,9 +68,8 @@ public abstract class SingleAdapter<T> extends RecyclerView.Adapter<ViewHolderHe
 
     /**
      * 数据末尾插入一条数据
-     * @param data
      */
-    public void insertItem(T data){
+    public void insertItem(T data) {
         mDataList.add(data);
         notifyItemInserted(mDataList.size() - 1);
     }
@@ -82,62 +77,56 @@ public abstract class SingleAdapter<T> extends RecyclerView.Adapter<ViewHolderHe
 
     /**
      * 在某个位置插入一条数据
-     * @param position
-     * @param data
      */
-    public void insertItem(int position,T data){
-        mDataList.add(position,data);
+    public void insertItem(int position, T data) {
+        mDataList.add(position, data);
         notifyItemInserted(position);
     }
 
     /**
      * 同时插入多条数据
+     *
      * @param items 可变数组
      */
-    public void insertItems(T ...items){
+    public void insertItems(T... items) {
         insertItems(Arrays.asList(items));
     }
 
     /**
      * 同时插入多条数据
+     *
      * @param dataList 数据List
      */
-    public void insertItems(List<T> dataList){
+    public void insertItems(List<T> dataList) {
         if (checkNoDataList(dataList)) {
             return;
         }
         mDataList.addAll(dataList);
-        notifyItemRangeInserted(mDataList.size() - dataList.size(),dataList.size());
+        notifyItemRangeInserted(mDataList.size() - dataList.size(), dataList.size());
     }
 
     /**
      * 某个位置插入多条数据
-     *
-     * @param position
-     * @param dataList
      */
-    public void insertItems(int position,List<T> dataList){
+    public void insertItems(int position, List<T> dataList) {
         if (checkNoDataList(dataList)) {
             return;
         }
-        mDataList.addAll(position,dataList);
-        notifyItemRangeInserted(position,dataList.size());
+        mDataList.addAll(position, dataList);
+        notifyItemRangeInserted(position, dataList.size());
     }
 
 
     /**
      * 更新某个位置的数据
-     * @param position
-     * @param data
      */
-    public void updateItem(int position,T data){
+    public void updateItem(int position, T data) {
         mDataList.set(position, data);
         notifyItemChanged(position);
     }
 
     /**
      * 删除某条数据
-     * @param pData
      */
     public void removeItem(T pData) {
         int p = mDataList.indexOf(pData);
@@ -148,24 +137,69 @@ public abstract class SingleAdapter<T> extends RecyclerView.Adapter<ViewHolderHe
 
     /**
      * 根据位置删除数据
-     * @param position
      */
     public void removeItem(int position) {
         mDataList.remove(position);
         notifyItemRemoved(position);
     }
 
+
     /**
-     * 清空数据
+     * 移动数据位置
+     * @param fromPosition
+     * @param toPosition
      */
-    public void clear(){
-        if (mDataList != null) {
-            mDataList.clear();
-            notifyDataSetChanged();
+    public void moveItem(int fromPosition,int toPosition){
+        if (fromPosition < mDataList.size()) {
+            T item = mDataList.remove(fromPosition);
+            toPosition = Math.min(mDataList.size(), Math.max(0,toPosition));
+            mDataList.add(toPosition, item);
+            notifyItemMoved(fromPosition,toPosition);
         }
     }
 
-    private boolean checkNoDataList(List dataList){
+    /**
+     * 移动交换两个位置的数据
+     * @param p1
+     * @param p2
+     */
+    public void exchangeItem(int p1, int p2) {
+        int start = Math.min(p1, p2);
+        int end = Math.max(p1, p2);
+        moveItem(end,start);
+        moveItem(start+1,end+1);
+    }
+
+    /**
+     * 替换所有数据
+     *
+     * @param items
+     */
+    public void replaceItems(T ...items) {
+        replaceItems(Arrays.asList(items));
+    }
+
+    /**
+     * 替换所有数据 <=> 清空再添加 用于重新刷新等操作
+     * @param dataList
+     */
+    public void replaceItems(List<T> dataList) {
+        mDataList.clear();
+        if (dataList != null) {
+            mDataList.addAll(dataList);
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 清空数据
+     */
+    public void clear() {
+        mDataList.clear();
+        notifyDataSetChanged();
+    }
+
+    private boolean checkNoDataList(List dataList) {
         return dataList == null || dataList.size() == 0;
     }
 
@@ -173,18 +207,11 @@ public abstract class SingleAdapter<T> extends RecyclerView.Adapter<ViewHolderHe
 
     /**
      * 创建View
-     * @param pLayoutInflater
-     * @param pParent
-     * @param pViewType
-     * @return
      */
-    protected abstract View createView(final LayoutInflater pLayoutInflater, final ViewGroup pParent,final int pViewType);
+    protected abstract View createView(final LayoutInflater pLayoutInflater, final ViewGroup pParent, final int pViewType);
 
     /**
      * 绑定数据
-     * @param pHelper
-     * @param pData
-     * @param pPosition
      */
     protected abstract void bind(final ViewHolderHelper pHelper, final T pData, final int pPosition);
 }

@@ -30,6 +30,12 @@
             android:text="删除"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btn_moved"
+            android:text="交换"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

@@ -59,6 +59,9 @@ helper.bindVisibility(View.GONE,id1,id2,id3...);
   - updateItem
   - removeItem
   - clear
+	- replaceItems
+	- moveItem
+	- exchangeItem
 - 更为复杂的获取数据后修改，再Notify。
 
 ## 单布局使用

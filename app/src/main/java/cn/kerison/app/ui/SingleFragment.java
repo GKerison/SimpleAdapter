@@ -21,6 +21,8 @@ public class SingleFragment extends BaseFragment {
     protected void onAddAction() {
         mSingleAdapter.insertItem(0, "item" + nextId());
         mSingleAdapter.insertItems("1", "2", "3");
+
+        mSingleAdapter.replaceItems("4", "5", "6","7");
     }
 
     @Override
@@ -34,6 +36,14 @@ public class SingleFragment extends BaseFragment {
     protected void onRemoveAction() {
         if (mSingleAdapter.getItemCount() > 1) {
             mSingleAdapter.removeItem(1);
+        }
+    }
+
+    @Override
+    protected void onMoveAction() {
+        if (mSingleAdapter.getItemCount() > 3) {
+//            mSingleAdapter.moveItem(1, 3);
+            mSingleAdapter.exchangeItem(1, 3);
         }
     }
 }

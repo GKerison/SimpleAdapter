@@ -47,6 +47,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         view.findViewById(R.id.btn_add).setOnClickListener(this);
         view.findViewById(R.id.btn_update).setOnClickListener(this);
         view.findViewById(R.id.btn_remove).setOnClickListener(this);
+        view.findViewById(R.id.btn_moved).setOnClickListener(this);
     }
 
     @Override
@@ -64,6 +65,11 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
             case R.id.btn_remove:
                 onRemoveAction();
                 break;
+
+            case R.id.btn_moved:
+                onMoveAction();
+
+                break;
         }
     }
 
@@ -78,4 +84,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     protected abstract void onUpdateAction();
 
     protected abstract void onRemoveAction();
+
+    protected abstract void onMoveAction();
 }

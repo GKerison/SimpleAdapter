@@ -44,4 +44,12 @@ public class MultiFragment extends BaseFragment {
             mMultiAdapter.removeItem(1);
         }
     }
+
+    @Override
+    protected void onMoveAction() {
+        if (mMultiAdapter.getItemCount() > 3) {
+//            mMultiAdapter.moveItem(1, 3);
+            mMultiAdapter.exchangeItem(1,3);
+        }
+    }
 }
